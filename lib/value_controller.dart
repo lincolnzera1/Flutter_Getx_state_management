@@ -3,16 +3,16 @@ import 'package:get/get.dart';
 
 class ValueController extends GetxController {
   TextEditingController textController = TextEditingController();
+  TextEditingController nomeController= TextEditingController();
+  TextEditingController idadeController = TextEditingController();
   RxString frase = "".obs;
-  bool isLoad = false;
+  RxBool isLoad = false.obs;
 
   Future<void> setValue(String newValue) async {
-    isLoad = true;
-    update();
+    isLoad.value = true;
     await Future.delayed(const Duration(seconds: 2));
 
-    isLoad = false;
+    isLoad.value = false;
     frase.value = newValue;
-    update();
   }
 }
