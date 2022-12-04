@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getxis_redemption/value_controller.dart';
+import 'package:getxis_redemption/user_controller.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -12,7 +12,9 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final valueController = ValueController();
+  final userController = UserController();
+  TextEditingController nomeController = TextEditingController();
+  TextEditingController idadeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,55 +25,55 @@ class MyApp extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Obx(
-              () {
-                return Column(
-                  children: [
-                    Text("Nome: ${valueController.frase}"),
-                    Text("Idade: ${valueController.frase}")
-                  ],
-                );
-              },
-            ),
+            Obx(() {
+              return Column(
+                children: [
+                  Text("Nome: ${userController.user.value.name}"),
+                  Text("Nome: ${userController.user.value.age}")
+                ],
+              );
+            }),
             Row(
               children: [
                 Expanded(
                   child: TextField(
                     decoration: const InputDecoration(label: Text("Nome")),
-                    controller: valueController.nomeController,
+                    controller: nomeController,
                   ),
                 ),
-                SizedBox(width: 90,),
+                const SizedBox(
+                  width: 90,
+                ),
                 Expanded(
                     child: ElevatedButton(
-                        onPressed: () {}, child: Text("Salvar"))),
+                        onPressed: () {
+                          userController.setUserName(nomeController.text);
+                        }, child: Text("Salvar"))),
               ],
             ),
-            Row(              
+            Row(
               children: [
                 Expanded(
                   child: TextField(
                     decoration: const InputDecoration(label: Text("Idade")),
-                    controller: valueController.idadeController,
+                    controller: idadeController,
                   ),
                 ),
-                SizedBox(width: 90,),
+                SizedBox(
+                  width: 90,
+                ),
                 Expanded(
                     child: ElevatedButton(
-                        onPressed: () {}, child: Text("Salvar"))),
+                        onPressed: () {
+                          userController
+                              .setUserAge(int.parse(idadeController.text));
+                        },
+                        child: Text("Salvar"))),
               ],
             ),
-            SizedBox(height: 50,),
-            Obx(() {
-              return valueController.isLoad.value
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: () {
-                        String value = valueController.textController.text;
-                        valueController.setValue(value);
-                      },
-                      child: const Text("Confirmar"));
-            })
+            SizedBox(
+              height: 50,
+            ),
           ],
         ),
       ),
