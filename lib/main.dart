@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getxis_redemption/tela2.dart';
 import 'package:getxis_redemption/user_controller.dart';
 
 void main() {
-  runApp(MaterialApp(
+  Get.lazyPut<UserController>(
+    () => UserController(),
+  );
+
+  runApp(GetMaterialApp(
     home: MyApp(),
   ));
 }
@@ -12,7 +17,7 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final userController = UserController();
+  final UserController userController = Get.find();
   TextEditingController nomeController = TextEditingController();
   TextEditingController idadeController = TextEditingController();
 
@@ -48,7 +53,8 @@ class MyApp extends StatelessWidget {
                     child: ElevatedButton(
                         onPressed: () {
                           userController.setUserName(nomeController.text);
-                        }, child: Text("Salvar"))),
+                        },
+                        child: Text("Salvar"))),
               ],
             ),
             Row(
@@ -74,6 +80,33 @@ class MyApp extends StatelessWidget {
             SizedBox(
               height: 50,
             ),
+            ElevatedButton(
+                onPressed: () {
+                  Get.to(() => Tela2());
+                },
+                child: Text("Run"))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Tela2 extends StatelessWidget {
+  Tela2({super.key});
+
+  final UserController userController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Container(
+        child: Column(
+          children: [
+            Obx(() {
+              return Text("texto: ${userController.user.value.name}");
+            })
           ],
         ),
       ),
